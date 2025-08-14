@@ -1,0 +1,46 @@
+## Ignore arquivos de build
+bin/
+obj/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Arquivos de log e temporários
+*.log
+*.tmp
+
+## Arquivos do Visual Studio
+.vs/
+*.vc.db
+*.vsp
+*.pidb
+*.pdb
+
+## Diretórios de publicação
+publish/
+
+## Configurações locais
+*.dbmdl
+*.DS_Store
+Thumbs.db
+
+## Pacotes (caso use NuGet)
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Arquivos gerados
+*.exe
+*.dll
+*.cache
+*.bak
+
+## Arquivos de build do Rider ou ReSharper
+.idea/
+*.DotSettings.user
+_ReSharper*/
