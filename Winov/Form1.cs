@@ -1,4 +1,6 @@
 using System.Data;
+using System.IO;
+using Winov.Helpers;
 
 namespace Winov
 {
@@ -7,6 +9,7 @@ namespace Winov
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
@@ -54,6 +57,9 @@ namespace Winov
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+
+            if (txtHost.Text != "" && txtPort.Text != "" && txtPwd.Text != "" && txtUser.Text != "" && txtDb.Text != "")
+            { 
             using (StreamWriter writer = new StreamWriter("config.ini"))
             {
                 writer.WriteLine("[Conexão]");
@@ -65,12 +71,23 @@ namespace Winov
             }
 
             MessageBox.Show("Dados salvos com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            clearTxt();
+            clearTxt(); }
+            else{
+                MessageBox.Show("É necessário preencher todos os campos", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnTest_Click(object sender, EventArgs e)
-        {
 
+        {
+            string connString = "Host="+txtHost.Text+";Port="+txtPort.Text+";Username="+txtUser.Text+";Password="+txtPwd.Text+";Database="+txtDb.Text+";";
+            if (!PostgresHelper.TestConnection(connString))
+            {
+                MessageBox.Show("Erro na conexão", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else {
+                MessageBox.Show("Sucesso na conexão", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
         }
 
         private void clearTxt()
@@ -92,31 +109,41 @@ namespace Winov
             if(radioPRD.Checked)
                 type = radioPRD.Text;
 
-            using (StreamWriter writer = new StreamWriter("dados.csv", true))        
+            if (txtClient.Text != "" && txtWS.Text != "" && txtAPI.Text != "" && type != "")
             {
-                writer.Write(txtClient.Text + "," + txtWS.Text + ","+ txtAPI.Text+","+type+"\n");
-            }
-            txtAPI.Clear();
-            txtClient.Clear();
-            txtWS.Clear();
-            radioHML.Checked = false;
-            radioPRD.Checked = false;
+                using (StreamWriter writer = new StreamWriter("dados.csv", true))
+                {
+                    writer.Write(txtClient.Text + "," + txtWS.Text + "," + txtAPI.Text + "," + type + "\n");
+                }
+                txtAPI.Clear();
+                txtClient.Clear();
+                txtWS.Clear();
+                radioHML.Checked = false;
+                radioPRD.Checked = false;
 
-            string path = "dados.csv";
-            loadTable(path);
+                string path = "dados.csv";
+                loadTable(path);
+            }
+            else
+            {
+                MessageBox.Show("É necessário preencher todos os campos", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+
         }
 
-        private void loadTable(string path) {
-            dt.Rows.Clear();
+            private void loadTable(string path) {
+                dt.Rows.Clear();
 
-            var linhas = File.ReadAllLines(path);
+                var linhas = File.ReadAllLines(path);
  
 
-            for (int i = 0;  i < linhas.Length; i++)
-            {
-                string[] dados = linhas[i].Split(',');
-                dt.Rows.Add(dados);
+                for (int i = 0;  i < linhas.Length; i++)
+                {
+                    string[] dados = linhas[i].Split(',');
+                    dt.Rows.Add(dados);
+                }
             }
-        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             btnSalvar = new Button();
             btnCancel = new Button();
             radioPRD = new RadioButton();
@@ -40,6 +41,10 @@
             txtAPI = new TextBox();
             txtClient = new TextBox();
             dt = new DataGridView();
+            Client = new DataGridViewTextBoxColumn();
+            WS = new DataGridViewTextBoxColumn();
+            API = new DataGridViewTextBoxColumn();
+            type = new DataGridViewTextBoxColumn();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
@@ -55,10 +60,6 @@
             label4 = new Label();
             btnSave = new Button();
             btnTest = new Button();
-            Client = new DataGridViewTextBoxColumn();
-            WS = new DataGridViewTextBoxColumn();
-            API = new DataGridViewTextBoxColumn();
-            type = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -195,8 +196,36 @@
             dt.Location = new Point(31, 31);
             dt.Name = "dt";
             dt.RowHeadersWidth = 51;
-            dt.Size = new Size(553, 402);
+            dt.Size = new Size(578, 402);
             dt.TabIndex = 0;
+            // 
+            // Client
+            // 
+            Client.HeaderText = "Cliente";
+            Client.MinimumWidth = 6;
+            Client.Name = "Client";
+            Client.Width = 125;
+            // 
+            // WS
+            // 
+            WS.HeaderText = "WS";
+            WS.MinimumWidth = 6;
+            WS.Name = "WS";
+            WS.Width = 125;
+            // 
+            // API
+            // 
+            API.HeaderText = "API";
+            API.MinimumWidth = 6;
+            API.Name = "API";
+            API.Width = 125;
+            // 
+            // type
+            // 
+            type.HeaderText = "Tipo";
+            type.MinimumWidth = 6;
+            type.Name = "type";
+            type.Width = 125;
             // 
             // tabControl1
             // 
@@ -344,42 +373,20 @@
             btnTest.UseVisualStyleBackColor = true;
             btnTest.Click += btnTest_Click;
             // 
-            // Client
-            // 
-            Client.HeaderText = "Cliente";
-            Client.MinimumWidth = 6;
-            Client.Name = "Client";
-            Client.Width = 125;
-            // 
-            // WS
-            // 
-            WS.HeaderText = "WS";
-            WS.MinimumWidth = 6;
-            WS.Name = "WS";
-            WS.Width = 125;
-            // 
-            // API
-            // 
-            API.HeaderText = "API";
-            API.MinimumWidth = 6;
-            API.Name = "API";
-            API.Width = 125;
-            // 
-            // type
-            // 
-            type.HeaderText = "Tipo";
-            type.MinimumWidth = 6;
-            type.Name = "type";
-            type.Width = 125;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1082, 513);
             Controls.Add(tabControl1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
-            Text = "Form1";
+            RightToLeftLayout = true;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Controle de portas - Winov";
             Load += Form1_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
