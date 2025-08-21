@@ -9,6 +9,7 @@ namespace Winov
         public Form1()
         {
             InitializeComponent();
+           
 
         }
 
@@ -57,22 +58,17 @@ namespace Winov
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-
+            string path = Path.Combine(Application.StartupPath, "config.ini");
             if (txtHost.Text != "" && txtPort.Text != "" && txtPwd.Text != "" && txtUser.Text != "" && txtDb.Text != "")
-            { 
-            using (StreamWriter writer = new StreamWriter("config.ini"))
             {
-                writer.WriteLine("[Conexão]");
-                writer.WriteLine("HOST = " + txtHost.Text);
-                writer.WriteLine("PORT = " + txtPort.Text);
-                writer.WriteLine("USER = " + txtUser.Text);
-                writer.WriteLine("PASSWORD = " + txtPwd.Text);
-                writer.WriteLine("DATABASE = " + txtDb.Text);
-            }
 
-            MessageBox.Show("Dados salvos com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            clearTxt(); }
-            else{
+                var iniWriter = new IniConfigWriter(path);
+                iniWriter.SaveConfig(txtHost, txtPort, txtUser, txtPwd, txtDb);
+                MessageBox.Show("Dados salvos com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clearTxt();
+            }
+            else
+            {
                 MessageBox.Show("É necessário preencher todos os campos", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -80,14 +76,29 @@ namespace Winov
         private void btnTest_Click(object sender, EventArgs e)
 
         {
-            string connString = "Host="+txtHost.Text+";Port="+txtPort.Text+";Username="+txtUser.Text+";Password="+txtPwd.Text+";Database="+txtDb.Text+";";
-            if (!PostgresHelper.TestConnection(connString))
+            string path = Path.Combine(Application.StartupPath, "config.ini");
+            try
             {
-                MessageBox.Show("Erro na conexão", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else {
-                MessageBox.Show("Sucesso na conexão", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var iniReader = new IniReader(path);
+                string connectionString = iniReader.GetConnectionString();
+
+                if (!PostgresHelper.TestConnection(connectionString))
+                {
+                    MessageBox.Show("Erro na conexão", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                else
+                {
+                    MessageBox.Show("Sucesso na conexão", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro na conexão: " + ex, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            //string connString = "Host=" + txtHost.Text + ";Port=" + txtPort.Text + ";Username=" + txtUser.Text + ";Password=" + txtPwd.Text + ";Database=" + txtDb.Text + ";";
+
         }
 
         private void clearTxt()
@@ -104,9 +115,9 @@ namespace Winov
         {
             string type = "";
 
-            if(radioHML.Checked)
+            if (radioHML.Checked)
                 type = radioHML.Text;
-            if(radioPRD.Checked)
+            if (radioPRD.Checked)
                 type = radioPRD.Text;
 
             if (txtClient.Text != "" && txtWS.Text != "" && txtAPI.Text != "" && type != "")
@@ -129,21 +140,30 @@ namespace Winov
                 MessageBox.Show("É necessário preencher todos os campos", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
 
+        private void loadTable(string path)
+        {
+            dt.Rows.Clear();
+
+            var linhas = File.ReadAllLines(path);
+
+
+            for (int i = 0; i < linhas.Length; i++)
+            {
+                string[] dados = linhas[i].Split(',');
+                dt.Rows.Add(dados);
+            }
+        }
+
+        private void txtHost_TextChanged(object sender, EventArgs e)
+        {
 
         }
 
-            private void loadTable(string path) {
-                dt.Rows.Clear();
+        private void txtPwd_TextChanged(object sender, EventArgs e)
+        {
 
-                var linhas = File.ReadAllLines(path);
- 
-
-                for (int i = 0;  i < linhas.Length; i++)
-                {
-                    string[] dados = linhas[i].Split(',');
-                    dt.Rows.Add(dados);
-                }
-            }
+        }
     }
 }
