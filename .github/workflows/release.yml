@@ -1,0 +1,50 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # Dispara em tags tipo v1.0.0
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Fazer checkout do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Instalar SDK do .NET (versão que você usa)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x" # ajuste para sua versão
+
+      # Restaurar dependências NuGet
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build do projeto
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      # Publicar (gera binário)
+      - name: Publish project
+        run: dotnet publish --configuration Release --output ./publish --no-build
+
+      # Compactar o diretório publish
+      - name: Create zip
+        run: |
+          cd publish
+          zip -r ../release.zip *
+          cd ..
+
+      # Criar release no GitHub
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

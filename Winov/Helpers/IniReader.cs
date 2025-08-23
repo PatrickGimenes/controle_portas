@@ -15,11 +15,13 @@ public class IniReader
 
     private void LoadIniFile(string filePath)
     {
-        if (!File.Exists(filePath))
-            throw new FileNotFoundException("Arquivo .ini não encontrado.", filePath);
+        if (!File.Exists(filePath)) { 
             MessageBox.Show("Arquivo .ini não encontrado. " + filePath, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
 
-        string currentSection = null;
+        }
+
+        string currentSection = "";
 
         foreach (var line in File.ReadAllLines(filePath))
         {
@@ -54,7 +56,7 @@ public class IniReader
             return value;
         }
 
-        return null;
+        return "";
     }
 
     public string GetConnectionString()
@@ -69,12 +71,11 @@ public class IniReader
             string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password) ||
             string.IsNullOrEmpty(database))
         {
-            throw new InvalidOperationException("Dados de conexão incompletos no arquivo .ini");
             MessageBox.Show("Dados de conexão incompletos no arquivo .ini", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            throw new InvalidOperationException("Dados de conexão incompletos no arquivo .ini");
 
         }
 
-        // Exemplo de connection string para PostgreSQL
         return $"Host={host};Port={port};Username={user};Password={password};Database={database}";
     }
 
