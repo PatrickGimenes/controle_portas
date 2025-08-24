@@ -14,17 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Instalar SDK do .NET (versão que você usa)
+      #  Instalar SDK do .NET 8
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.0.x" # ajuste para sua versão
+          dotnet-version: "8.0.x"
 
-      # Restaurar dependências NuGet
+      #  Restaurar dependências NuGet
       - name: Restore dependencies
         run: dotnet restore
 
-      # Build do projeto
+      #  Build do projeto
       - name: Build project
         run: dotnet build --configuration Release --no-restore
 
@@ -32,15 +32,16 @@ jobs:
       - name: Publish project
         run: dotnet publish --configuration Release --output ./publish --no-build
 
-      # Compactar o diretório publish
+      # Compactar o diretório publish (Windows)
       - name: Create zip
+        shell: powershell
         run: |
-          cd publish
-          zip -r ../release.zip *
-          cd ..
+          if (Test-Path ./release.zip) { Remove-Item ./release.zip }
+          Compress-Archive -Path ./publish/* -DestinationPath ./release.zip
 
-      # Criar release no GitHub
+      # Criar release no GitHub apenas se for push de tag
       - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
