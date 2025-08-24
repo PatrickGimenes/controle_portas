@@ -3,19 +3,27 @@
     public static List<int> GetUsedPorts(string connString)
     {
         var usedPorts = new List<int>();
-        using (var conn = new Npgsql.NpgsqlConnection(connString))
+
+        try
         {
-            conn.Open();
-            string sql = "SELECT ws::int, api::int FROM clientes";
-            using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
-            using (var reader = cmd.ExecuteReader())
+            using (var conn = new Npgsql.NpgsqlConnection(connString))
             {
-                while (reader.Read())
+                conn.Open();
+                string sql = "SELECT ws::int, api::int FROM clientes";
+                using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
+                using (var reader = cmd.ExecuteReader())
                 {
-                    usedPorts.Add(reader.GetInt32(0)); // WS
-                    usedPorts.Add(reader.GetInt32(1)); // API
+                    while (reader.Read())
+                    {
+                        usedPorts.Add(reader.GetInt32(0)); // WS
+                        usedPorts.Add(reader.GetInt32(1)); // API
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            return usedPorts;
         }
         return usedPorts;
     }

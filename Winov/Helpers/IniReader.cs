@@ -72,7 +72,8 @@ public class IniReader
             string.IsNullOrEmpty(database))
         {
             MessageBox.Show("Dados de conexão incompletos no arquivo .ini", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            throw new InvalidOperationException("Dados de conexão incompletos no arquivo .ini");
+            //throw new InvalidOperationException("Dados de conexão incompletos no arquivo .ini");
+            return string.Empty;
 
         }
 
@@ -85,10 +86,16 @@ public class IniReader
         var saltoStr = GetValue("Configuração", "SALTO");
 
         if (string.IsNullOrEmpty(inicialStr) || string.IsNullOrEmpty(saltoStr))
-            throw new InvalidOperationException("Dados de configuração de portas incompletos no arquivo .ini");
+        {
+            // valores padrão
+            return (9030, 5);
+        }
 
-        if (!int.TryParse(inicialStr, out int inicial) || !int.TryParse(saltoStr, out int salto))
-            throw new InvalidOperationException("Valores inválidos para INICIAL ou SALTO no arquivo .ini");
+        if (!int.TryParse(inicialStr, out int inicial))
+            inicial = 9030;
+
+        if (!int.TryParse(saltoStr, out int salto))
+            salto = 5;
 
         return (inicial, salto);
     }
