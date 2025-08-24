@@ -49,7 +49,16 @@ namespace Winov
             radioHML = new RadioButton();
             txtClient = new TextBox();
             tabPage2 = new TabPage();
+            panel4 = new Panel();
+            lblInfo = new Label();
+            btnSalvarPorta = new Button();
+            label12 = new Label();
+            label11 = new Label();
+            label10 = new Label();
+            txtSalto = new TextBox();
+            txtIncial = new TextBox();
             panel2 = new Panel();
+            label9 = new Label();
             label4 = new Label();
             txtPort = new TextBox();
             btnTest = new Button();
@@ -74,6 +83,7 @@ namespace Winov
             tabPage1.SuspendLayout();
             panel1.SuspendLayout();
             tabPage2.SuspendLayout();
+            panel4.SuspendLayout();
             panel2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -260,6 +270,7 @@ namespace Winov
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(panel4);
             tabPage2.Controls.Add(panel2);
             tabPage2.Location = new Point(4, 34);
             tabPage2.Margin = new Padding(4);
@@ -270,8 +281,87 @@ namespace Winov
             tabPage2.Text = "Configuração";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // panel4
+            // 
+            panel4.Controls.Add(lblInfo);
+            panel4.Controls.Add(btnSalvarPorta);
+            panel4.Controls.Add(label12);
+            panel4.Controls.Add(label11);
+            panel4.Controls.Add(label10);
+            panel4.Controls.Add(txtSalto);
+            panel4.Controls.Add(txtIncial);
+            panel4.Location = new Point(674, 31);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(435, 495);
+            panel4.TabIndex = 13;
+            // 
+            // lblInfo
+            // 
+            lblInfo.AutoSize = true;
+            lblInfo.Location = new Point(123, 288);
+            lblInfo.Name = "lblInfo";
+            lblInfo.Size = new Size(165, 100);
+            lblInfo.TabIndex = 13;
+            lblInfo.Text = "Configuração atual:\r\n\r\nPorta inicial: 9030\r\nSalto: 5";
+            // 
+            // btnSalvarPorta
+            // 
+            btnSalvarPorta.Location = new Point(148, 230);
+            btnSalvarPorta.Name = "btnSalvarPorta";
+            btnSalvarPorta.Size = new Size(112, 34);
+            btnSalvarPorta.TabIndex = 12;
+            btnSalvarPorta.Text = "Salvar";
+            btnSalvarPorta.UseVisualStyleBackColor = true;
+            btnSalvarPorta.Click += btnSalvarPorta_Click;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(75, 167);
+            label12.Margin = new Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new Size(52, 25);
+            label12.TabIndex = 11;
+            label12.Text = "Salto";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(30, 109);
+            label11.Margin = new Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new Size(97, 25);
+            label11.TabIndex = 10;
+            label11.Text = "Porta incial";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI Black", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.Location = new Point(75, 11);
+            label10.Name = "label10";
+            label10.Size = new Size(321, 45);
+            label10.TabIndex = 9;
+            label10.Text = "Sugestão de portas";
+            label10.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // txtSalto
+            // 
+            txtSalto.Location = new Point(138, 161);
+            txtSalto.Name = "txtSalto";
+            txtSalto.Size = new Size(150, 31);
+            txtSalto.TabIndex = 2;
+            // 
+            // txtIncial
+            // 
+            txtIncial.Location = new Point(137, 109);
+            txtIncial.Name = "txtIncial";
+            txtIncial.Size = new Size(150, 31);
+            txtIncial.TabIndex = 1;
+            // 
             // panel2
             // 
+            panel2.Controls.Add(label9);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(txtPort);
             panel2.Controls.Add(btnTest);
@@ -284,16 +374,27 @@ namespace Winov
             panel2.Controls.Add(label8);
             panel2.Controls.Add(label6);
             panel2.Controls.Add(label7);
-            panel2.Location = new Point(379, 38);
+            panel2.Location = new Point(95, 31);
             panel2.Margin = new Padding(4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(435, 494);
+            panel2.Size = new Size(435, 495);
             panel2.TabIndex = 12;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI Black", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9.Location = new Point(117, 11);
+            label9.Name = "label9";
+            label9.Size = new Size(268, 45);
+            label9.TabIndex = 8;
+            label9.Text = "Banco de dados";
+            label9.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(94, 75);
+            label4.Location = new Point(86, 75);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
             label4.Size = new Size(50, 25);
@@ -450,6 +551,8 @@ namespace Winov
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tabPage2.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             contextMenuStrip1.ResumeLayout(false);
@@ -495,5 +598,14 @@ namespace Winov
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem menuEditar;
         private ToolStripMenuItem menuExcluir;
+        private Panel panel4;
+        private Label label10;
+        private TextBox txtSalto;
+        private TextBox txtIncial;
+        private Label label9;
+        private Button btnSalvarPorta;
+        private Label label12;
+        private Label label11;
+        private Label lblInfo;
     }
 }

@@ -15,8 +15,7 @@ namespace Winov
     {
         private string connectionString;
         private int clientId;
-        private int API;
-        private int WS;
+        
         public EditClientForm(int id, string client, string type, string ws, string api)
         {
             InitializeComponent();
@@ -39,6 +38,7 @@ namespace Winov
 
         private void btnAtualizar_Click(object sender, EventArgs e)
         {
+            int API, WS;
             string type = radioPRD.Checked ? "Produção" : "Homologação";
 
             if (!string.IsNullOrEmpty(txtClient.Text) &&
@@ -47,7 +47,7 @@ namespace Winov
                            !string.IsNullOrEmpty(type))
             {
 
-                if (!int.TryParse(txtWS.Text, out API) || !int.TryParse(txtWS.Text, out WS))
+                if (!int.TryParse(txtAPI.Text, out API) || !int.TryParse(txtWS.Text, out WS))
                 {
                     MessageBox.Show("A porta deve ser um inteiro", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;

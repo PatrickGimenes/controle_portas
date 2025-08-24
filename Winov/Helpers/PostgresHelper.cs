@@ -42,14 +42,16 @@ namespace Winov.Helpers
                     conn.Open();
 
                     string sql = @"
-                CREATE TABLE IF NOT EXISTS clientes (
-                    id SERIAL PRIMARY KEY,
-                    nome VARCHAR(20) NOT NULL,
-                    ws VARCHAR(6) NOT NULL,
-                    api VARCHAR(6) NOT NULL,
-                    ambiente VARCHAR(20) NOT NULL
-                );
-            ";
+                    CREATE TABLE IF NOT EXISTS clientes (
+                        id SERIAL PRIMARY KEY,
+                        nome VARCHAR(20) NOT NULL,
+                        ws INT NOT NULL,
+                        api INT NOT NULL,
+                        ambiente VARCHAR(20) NOT NULL,
+                        CONSTRAINT unique_ws UNIQUE (ws),
+                        CONSTRAINT unique_api UNIQUE (api)
+                    );
+                    ";
 
                     using (var cmd = new NpgsqlCommand(sql, conn))
                     {

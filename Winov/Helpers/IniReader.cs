@@ -79,4 +79,18 @@ public class IniReader
         return $"Host={host};Port={port};Username={user};Password={password};Database={database}";
     }
 
+    public (int inicial, int salto) GetPortConfig()
+    {
+        var inicialStr = GetValue("Configuração", "INICIAL");
+        var saltoStr = GetValue("Configuração", "SALTO");
+
+        if (string.IsNullOrEmpty(inicialStr) || string.IsNullOrEmpty(saltoStr))
+            throw new InvalidOperationException("Dados de configuração de portas incompletos no arquivo .ini");
+
+        if (!int.TryParse(inicialStr, out int inicial) || !int.TryParse(saltoStr, out int salto))
+            throw new InvalidOperationException("Valores inválidos para INICIAL ou SALTO no arquivo .ini");
+
+        return (inicial, salto);
+    }
+
 }

@@ -11,11 +11,11 @@ namespace Winov
     {
         string path = Path.Combine(Application.StartupPath, "config.ini");
         private string connectionString;
-        private int API;
-        private int WS;
+
         public MainForm()
         {
             InitializeComponent();
+
             // Melhorar visual do DataGridView
             table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             table.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -35,6 +35,14 @@ namespace Winov
 
             // Carrega os dados no DataGridView
             LoadTableFromDatabase();
+
+            //Sugere novas portas
+            FillPortSuggestions();
+
+            UpdateLabe();
+
+
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -45,14 +53,15 @@ namespace Winov
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string path = Path.Combine(Application.StartupPath, "config.ini");
             if (txtHost.Text != "" && txtPort.Text != "" && txtPwd.Text != "" && txtUser.Text != "" && txtDb.Text != "")
             {
 
                 var iniWriter = new IniConfigWriter(path);
-                iniWriter.SaveConfig(txtHost, txtPort, txtUser, txtPwd, txtDb);
+                iniWriter.SaveConnectionConfig(txtHost.Text, txtPort.Text, txtUser.Text, txtPwd.Text, txtDb.Text);
                 MessageBox.Show("Dados salvos com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 clearTxt();
+
+
                 var iniReader = new IniReader(path);
                 connectionString = iniReader.GetConnectionString();
                 PostgresHelper.EnsureTableExists(connectionString);
@@ -73,7 +82,7 @@ namespace Winov
                     ";Database=" + txtDb.Text.Trim();
             try
             {
-         
+
 
                 if (!PostgresHelper.TestConnection(connectionString))
                 {
@@ -102,6 +111,9 @@ namespace Winov
             txtPwd.Clear();
             txtDb.Clear();
 
+            txtIncial.Clear();
+            txtSalto.Clear();
+
 
             txtAPI.Clear();
             txtClient.Clear();
@@ -113,15 +125,17 @@ namespace Winov
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            string type = radioPRD.Checked ? "Produção": "Homologação";
+            int API;
+            int WS;
+            string type = radioPRD.Checked ? "Produção" : "Homologação";
 
             if (!string.IsNullOrEmpty(txtClient.Text) &&
                            !string.IsNullOrEmpty(txtWS.Text) &&
                            !string.IsNullOrEmpty(txtAPI.Text) &&
                            !string.IsNullOrEmpty(type))
             {
-                
-                if (!int.TryParse(txtWS.Text, out API) || !int.TryParse(txtWS.Text, out WS))
+
+                if (!int.TryParse(txtAPI.Text, out API) || !int.TryParse(txtWS.Text, out WS))
                 {
                     MessageBox.Show("A porta deve ser um inteiro", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -131,6 +145,7 @@ namespace Winov
                 LoadTableFromDatabase();
 
                 clearTxt();
+                FillPortSuggestions();
             }
             else
             {
@@ -142,6 +157,7 @@ namespace Winov
         private void LoadTableFromDatabase()
         {
             PostgresHelper.SelectAll(connectionString, table);
+
         }
 
         private void menuExcluir_Click(object sender, EventArgs e)
@@ -179,6 +195,13 @@ namespace Winov
             }
         }
 
+        private void FillPortSuggestions()
+        {
+            int ws, api;
+            PortHelper.SuggestPorts(connectionString, "config_port.ini", out ws, out api);
+            txtWS.Text = ws.ToString();
+            txtAPI.Text = api.ToString();
+        }
         private void menuEditar_Click(object sender, EventArgs e)
         {
             if (table.SelectedRows.Count > 0)
@@ -201,6 +224,53 @@ namespace Winov
                     }
                 }
             }
+        }
+
+        private void btnSalvarPorta_Click(object sender, EventArgs e)
+        {
+            if (txtIncial.Text != "" && txtSalto.Text != "")
+            {
+            
+                if (!int.TryParse(txtIncial.Text, out int inicial) || !int.TryParse(txtSalto.Text, out int salto))
+                {
+                    MessageBox.Show("A porta deve ser um inteiro", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                var iniWriter = new IniConfigWriter(path);
+                iniWriter.SavePortConfig(inicial, salto);
+                
+                clearTxt();
+
+                UpdateLabe();
+                
+
+
+                var iniReader = new IniReader(path);
+                connectionString = iniReader.GetConnectionString();
+                PostgresHelper.EnsureTableExists(connectionString);
+                FillPortSuggestions();
+            }
+            else
+            {
+                MessageBox.Show("É necessário preencher todos os campos", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateLabe()
+        {
+
+            try
+            {
+                var iniReader = new IniReader("config_port.ini");
+                var (inicial, salto) = iniReader.GetPortConfig();
+                lblInfo.Text = $"Configuração atual:\r\n\r\nPorta inicial: {inicial}\r\nSalto: {salto}";
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = "Configuração de portas não encontrada ou inválida.";
+                Console.WriteLine(ex.Message); // opcional, só para debug
+            }
+            
         }
     }
 }

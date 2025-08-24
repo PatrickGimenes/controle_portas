@@ -43,7 +43,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(92, 98);
+            label3.Location = new Point(49, 82);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(85, 25);
@@ -53,7 +53,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(109, 51);
+            label1.Location = new Point(66, 35);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(65, 25);
@@ -63,7 +63,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(92, 151);
+            label2.Location = new Point(49, 135);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(85, 25);
@@ -72,7 +72,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(304, 295);
+            btnCancel.Location = new Point(261, 279);
             btnCancel.Margin = new Padding(4);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(118, 36);
@@ -83,7 +83,7 @@
             // 
             // btnAtualizar
             // 
-            btnAtualizar.Location = new Point(132, 295);
+            btnAtualizar.Location = new Point(89, 279);
             btnAtualizar.Margin = new Padding(4);
             btnAtualizar.Name = "btnAtualizar";
             btnAtualizar.Size = new Size(118, 36);
@@ -94,7 +94,7 @@
             // 
             // txtWS
             // 
-            txtWS.Location = new Point(197, 104);
+            txtWS.Location = new Point(154, 88);
             txtWS.Margin = new Padding(4);
             txtWS.Name = "txtWS";
             txtWS.PlaceholderText = "WS";
@@ -104,7 +104,7 @@
             // radioPRD
             // 
             radioPRD.AutoSize = true;
-            radioPRD.Location = new Point(305, 216);
+            radioPRD.Location = new Point(262, 200);
             radioPRD.Margin = new Padding(4);
             radioPRD.Name = "radioPRD";
             radioPRD.Size = new Size(113, 29);
@@ -115,7 +115,7 @@
             // 
             // txtAPI
             // 
-            txtAPI.Location = new Point(197, 156);
+            txtAPI.Location = new Point(154, 140);
             txtAPI.Margin = new Padding(4);
             txtAPI.Name = "txtAPI";
             txtAPI.PlaceholderText = "API";
@@ -125,7 +125,7 @@
             // radioHML
             // 
             radioHML.AutoSize = true;
-            radioHML.Location = new Point(92, 216);
+            radioHML.Location = new Point(49, 200);
             radioHML.Margin = new Padding(4);
             radioHML.Name = "radioHML";
             radioHML.Size = new Size(151, 29);
@@ -136,7 +136,7 @@
             // 
             // txtClient
             // 
-            txtClient.Location = new Point(197, 51);
+            txtClient.Location = new Point(154, 35);
             txtClient.Margin = new Padding(4);
             txtClient.Name = "txtClient";
             txtClient.PlaceholderText = "Cliente";

@@ -11,18 +11,35 @@ public class IniConfigWriter
         iniFilePath = filePath;
     }
 
-    public void SaveConfig(TextBox txtHost, TextBox txtPort, TextBox txtUser, TextBox txtPwd, TextBox txtDb)
+    public void SaveConnectionConfig(string host, string port, string user, string password, string database)
+    {
+        SaveIniFile(iniFilePath, writer =>
+        {
+            writer.WriteLine("[Conexão]");
+            writer.WriteLine($"HOST = {host.Trim()}");
+            writer.WriteLine($"PORT = {port.Trim()}");
+            writer.WriteLine($"USER = {user.Trim()}");
+            writer.WriteLine($"PASSWORD = {password.Trim()}");
+            writer.WriteLine($"DATABASE = {database.Trim()}");
+        });
+    }
+
+    public void SavePortConfig(int inicial, int salto)
+    {
+        SaveIniFile("config_port.ini", writer =>
+        {
+            writer.WriteLine("[Configuração]");
+            writer.WriteLine($"INICIAL = {inicial}");
+            writer.WriteLine($"SALTO = {salto}");
+        });
+    }
+    private void SaveIniFile(string path, Action<StreamWriter> writeAction)
     {
         try
         {
-            using (StreamWriter writer = new StreamWriter(iniFilePath, false)) // false = sobrescreve o arquivo
+            using (var writer = new StreamWriter(path, false)) // false = sobrescreve o arquivo
             {
-                writer.WriteLine("[Conexão]");
-                writer.WriteLine("HOST = " + txtHost.Text.Trim());
-                writer.WriteLine("PORT = " + txtPort.Text.Trim());
-                writer.WriteLine("USER = " + txtUser.Text.Trim());
-                writer.WriteLine("PASSWORD = " + txtPwd.Text.Trim());
-                writer.WriteLine("DATABASE = " + txtDb.Text.Trim());
+                writeAction(writer);
             }
 
             MessageBox.Show("Configuração salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
