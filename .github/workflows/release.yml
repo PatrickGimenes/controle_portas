@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "7.0.x" # ajuste para sua versão
+          dotnet-version: "8.0.x" # ajuste para sua versão
 
       # Restaurar dependências NuGet
       - name: Restore dependencies
